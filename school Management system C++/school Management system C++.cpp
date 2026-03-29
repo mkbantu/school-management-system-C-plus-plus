@@ -5,6 +5,7 @@
 #include<fstream>
 #include<string>
 #include <vector>
+#include <sstream>
 using namespace std;
 struct student {
 
@@ -25,6 +26,42 @@ void readFromFile() {
 }
 
 
+
+void deleteStudent() {
+	int id;
+	cout << "Enter the ID of the student to delete: ";
+	cin >> id;
+	ifstream inFile("students.txt");
+	ofstream outFile("temp.txt");
+	string line;
+	bool found = false;
+	while (getline(inFile, line)) {
+		stringstream ss(line);
+		string name, gradeStr;
+		int studentId;
+		getline(ss, name, ',');
+		ss >> studentId;
+		getline(ss, gradeStr);
+		if (studentId != id) {
+			outFile << name << "," << studentId << "," << gradeStr << endl;
+		}
+		else {
+			found = true;
+		}
+	}
+	inFile.close();
+	outFile.close();
+	if (found) {
+		remove("students.txt");
+		rename("temp.txt", "students.txt");
+		cout << "Student with ID " << id << " has been deleted." << endl;
+	}
+	else {
+		remove("temp.txt");
+		cout << "Student with ID " << id << " not found." << endl;
+	}
+}
+
 int main()
 {
 	while (true)
@@ -33,7 +70,9 @@ int main()
 		cout << "============WELCOME TO SCHOOL MANAGEMENT SYSTEM============" << endl;
 		cout << "1. Add student" << endl;
 		cout << "2. View students" << endl;
-		cout << "3. Exit" << endl;
+		cout << "3. Delete student by ID" << endl;
+		cout << "4.Delete the whole student " << endl;
+		cout << "5. Exit" << endl;
 		cin >> choice;
 
 	
@@ -59,7 +98,25 @@ int main()
 	else if (choice == 2) {
 		readFromFile();
 	}
+	else if(choice==4){
+		char response;
+		cout << "!!!!!!!!!!!!!!Are you sure you want to delete all students? (y/n):!!!!!!!!!!!!!!!! \n ";
+		cin >> response;
+		if ( response == 'y' || response == 'Y') {
+			ofstream outFile("students.txt", ios::trunc);
+			outFile.close();
+			cout << "All students have been deleted." << endl;
+		}
+		else {
+			cout << "Deletion cancelled." << endl;
+		}
+
+
+	}
 	else if (choice == 3) {
+		deleteStudent();
+	}
+	else if (choice == 5) {
 		break;
 	}
 	else {

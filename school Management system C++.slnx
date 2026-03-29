@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="school Management system C++/school Management system C++.vcxproj" />
+  <Project Path="school Management system C++/school Management system C++.vcxproj" Id="5f9545a9-b9c4-47b0-9331-b0d7ba9c3b50" />
 </Solution>
